@@ -1,0 +1,24 @@
+# Ignore Jupyter notebooks
+*.ipynb
+*.ipynb_checkpoints/
+
+# Ignore the script explicitly
+create_comparison_commands.sh
+
+# Ignore Python cache and build artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore temporary / editor files
+*.swp
+*.swo
+*.bak
+*.tmp
+*.log
+
+# Ignore system-specific files
+.DS_Store
+Thumbs.db
+
