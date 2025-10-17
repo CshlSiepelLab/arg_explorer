@@ -4,7 +4,7 @@
 
 # Ignore the script explicitly
 create_comparison_commands.sh
-
+temp.sh
 # Ignore Python cache and build artifacts
 __pycache__/
 *.pyc

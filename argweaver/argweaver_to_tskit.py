@@ -9,6 +9,11 @@ import tskit
 import os
 
 
+'''
+Currently this function doesn't work
+alternative approach take bed file and create a list of local trees using tskit function .from_newick
+'''
+
 def convert_argweaver(infile, filename=None):
     """
     Convert an ARGweaver .arg file to a tskit tree sequence.

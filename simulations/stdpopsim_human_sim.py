@@ -8,7 +8,7 @@ import stdpopsim
 from collections import defaultdict
 
 def parse_args():
-    p = argparse.ArgumentParser(description="Simulate tskit TreeSequence with stdpopsim.")
+    p = argparse.ArgumentParser(description="Generic functions to simulate human chroms using stdpopsim.")
     p.add_argument("--model", required=True, help="Demographic model ID (e.g., OutOfAfrica_3G09).")
     
     p.add_argument("--species", default="HomSap", help="Species ID (default: HomSap for humans).")

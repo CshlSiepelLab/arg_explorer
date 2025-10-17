@@ -1,6 +1,8 @@
 #!/bin/bash
 # Usage: ./run_vcf2zarr.sh input.vcf.gz /path/to/output_dir
 
+
+#zarr version should < 3
 set -euo pipefail
 
 vcf_file="$1"
