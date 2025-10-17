@@ -28,7 +28,8 @@ colnames(trees_df) <- c("start", "end", "newick")
 # -----------------------------
 # Compute SPR distance between adjacent trees
 # -----------------------------
-results <- data.frame(start_line2 = numeric(), spr_dist = numeric(), stringsAsFactors = FALSE)
+results <- data.frame(start = numeric(), end = numeric(), spr_dist = numeric(),
+                      splitInfoDist = numeric(), rf_dist = numeric(), stringsAsFactors = FALSE
 
 for (i in 1:(nrow(trees_df) - 1)) {
   line1_newick <- trees_df$newick[i]
@@ -38,10 +39,12 @@ for (i in 1:(nrow(trees_df) - 1)) {
   tree2 <- ape::read.tree(text = line2_newick)
 
   spr_dist <- TreeDist::SPRDist(tree1, tree2, method = "deOliveira", symmetric = TRUE)
+  info_dist <- TreeDist::MatchingSplitInfoDistance(tree1, tree2)
+  rf_dist <- TreeDist::RobinsonFoulds(tree1, tree2)
 
   results <- rbind(
     results,
-    data.frame(start_line2 = trees_df$start[i + 1], spr_dist = spr_dist)
+    data.frame(start = trees_df$start[i + 1], end = trees_df$end[i+1], spr_dist = spr_dist, splitInfoDist = info_dist, rf_dist = rf_dist)
   )
 }
 

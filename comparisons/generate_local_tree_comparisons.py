@@ -49,7 +49,7 @@ def main():
     parser.add_argument("--ts1-tree", required=True, help="Type of tree ts1")
     parser.add_argument("--ts2-tree", required=True, help="Type of tree ts2")
 
-    parser.add_argument("--max-trees", type=int, default=2000, help="Subsample cap")
+    parser.add_argument("--max-trees", type=int, default=10000, help="Subsample cap")
     parser.add_argument("--drop-head-tail", type=int, default=1, help="Drop N intervals from head and tail (default: 2)")
     parser.add_argument("--seed", type=int, default=13, help="Random seed for subsampling")
 

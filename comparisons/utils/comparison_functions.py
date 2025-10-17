@@ -7,6 +7,37 @@ import dendropy as dp
 from dendropy.calculate import treecompare
 
 
+def getMedianTMRCA(tree, pairs, normalize_by_root = False):
+    if normalize_by_root:
+        root_time = getTimeOfRoot(tree)
+        return np.median(np.array([tree.tmrca(x, y) / root_time for x, y in pairs]))
+    else:
+        return np.median(np.array([tree.tmrca(x, y) for x, y in pairs]))
+
+def getTimeOfRoot(tree):
+    root_node = tree.root
+    return tree.time(root_node)
+    
+def getMedianTMRCAWindow(ts):
+    median_tmrcas = []
+    common_samples = sorted(set(tree.samples()).intersection(tree.samples()))
+    pairs = list(combinations(common_samples, 2))
+    
+    for tree in ts.trees():
+        if tree.num_roots != 1:
+            continue
+        median = getMedianTMRCA(ts, pairs)
+        median_tmrcas.append(getMedianTMRCA(tree))
+    return median_tmrcas
+
+def getTimeOfRootWindow(ts):
+    root_times = []
+    for tree in ts.trees():
+        if tree.num_roots != 1:
+            continue
+        root_times.append(getTimeOfRoot(tree))
+    return root_times
+
 def getTables(ts_table):
     '''
     input: e.g. ts.tables.nodes
@@ -93,6 +124,23 @@ def calculate_unweighted_rf(t1_newick, t2_newick):
     t2.encode_bipartitions()
     return treecompare.unweighted_robinson_foulds_distance(t1, t2)
 
+
+def getMedianCoalescence(tree, normalize = True):
+    '''
+    Given a local tree get median coalescence time (based on the time of each internal node)
+    if normalize true the time is divided by time to root (so a value close to 1 means deep coalescences and 0 means shallow)
+    '''
+    if tree.num_roots != 1:
+        return []
+    root_time = getTimeOfRoot(tree)
+    norm = 1
+    if normalize:
+        norm = root_time
+    node_times = [ tree.time(node) for node in tree.nodes() ]
+    normalized_node_times = [time / norm for time in node_times if time < root_time and time > 0]
+    assert len(normalized_node_times) > 0, "node_times array in getMedianCoalescence is empty"
+    return np.median(normalized_node_times)
+    
 
 def compute_tree_metrics(sub_tree1, sub_tree2, interval_start, interval_end, pairs):
     """
@@ -185,3 +233,19 @@ def compute_tree_metrics(sub_tree1, sub_tree2, interval_start, interval_end, pai
         "tree1_newick": tree1_newick,
         "tree2_newick": tree2_newick,
     }
+
+##Specify exposed functions:
+__all__ = [
+    
+    "generateComparisonIntervals",
+    "load_local_trees",
+    "calculate_unweighted_rf",
+    "compute_tree_metrics",
+    "getOffsetBreakpoints",
+    "getTables",
+    "getMedianTMRCA",
+    "getTimeOfRoot",
+    "getMedianTMRCAWindow",
+    "getTimeOfRootWindow",
+    "getMedianCoalescence"
+]
